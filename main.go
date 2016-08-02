@@ -53,6 +53,8 @@ func main(){
   http.HandleFunc("/section",section.SectionHandler)
   http.HandleFunc("/addsection",section.AddSectionHandler)
   http.HandleFunc("/removesection/",section.RemoveSectionHandler)
+  http.HandleFunc("/addteacher",section.AddTeacherHandler)
+  //http.HandleFunc("/removeteacher",section.RemoveTeacherHandler)
 
   http.ListenAndServe(":8080",nil)
 }

@@ -1,8 +1,9 @@
 <html>
   <head>
-    <title>Feedback - Admin: Course</title>
+    <title>Feedback - Admin: Sections</title>
   </head>
   <body>
+    <h2>Sections in session : {{.Session}}</h2>
       {{if not .Sections}}
         No sections added.
       {{else}}
@@ -31,10 +32,16 @@
               Password
             </td>
             <td>
+              Teachers
+            </td>
+            <td>
               Added On
             </td>
+            <td>
+              Remove Section
+            </td>
           </tr>
-          {{range .Sections}}
+          {{range $currsection := .Sections}}
             <tr>
               <td>
                 {{.Sectionid}}
@@ -56,6 +63,58 @@
               </td>
               <td>
                 {{.Password}}
+              </td>
+              <td>
+                {{if not .Teachers}}
+                This section has no teachers added
+                {{else}}
+                <table>
+                  <tr>
+                    <td>
+                      Faculty ID
+                    </td>
+                    <td>
+                      Subject ID
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                  {{range .Teachers}}
+                    <tr>
+                      <td>
+                        {{.Facultyid}}
+                      </td>
+                      <td>
+                        {{.Subjectid}}
+                      </td>
+                      <td>
+                        <form method="POST" action="/removeteacher">
+                          <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
+                          <input type="hidden" name="facultyid" value="{{.Facultyid}}">
+                          <input type="hidden" name="subjectid" value="{{.Subjectid}}">
+                          <input type="hidden" name="formsid" value="{{$.FormSid}}">
+                          <input type="Submit" value="Remove">
+                        </form>
+                      </td>
+                    </tr>
+                  {{end}}
+                  <form method="POST" action="/addteacher">
+                    <tr>
+                      <td>
+                        <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
+                        <input type="hidden" name="formsid" value="{{$.FormSid}}">
+                        <input type="text" name="facultyid" placeholder="Faculty ID">
+                      </td>
+                      <td>
+                        <input type="text" name="subjectid" placeholder="Subject ID">
+                      </td>
+                      <td>
+                        <input type="Submit" value="Add">
+                      </td>
+                    </tr>
+                  </form>
+                </table>
+                {{end}}
               </td>
               <td>
                 {{.Addedon}}
@@ -80,7 +139,7 @@
         Section Course ID: <input type="text" name="sectioncourseid" placeholder="Enter Section Course ID">
         Section Students: <input type="text" name="sectionstudents" placeholder="Enter Section Students">
         <br>
-        <input type="hidden" name="formsid" value="{{.FormSid}}">
+        <input type="hidden" name="formsid" value="{{$.FormSid}}">
         <input type="submit" value="Add Course" name="submit">
         <br>
 

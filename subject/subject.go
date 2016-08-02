@@ -41,6 +41,17 @@ func GetSubjects() (*[]Subject,error){
   return &mySubjectSlice,nil
 }
 
+func GetSubject(sid string) (*Subject,error){
+  log.Println("Getting subject with subjectid:",sid)
+  var mySubject *Subject = &Subject{}
+  err := database.SubjectCollection.Find(bson.M{"subjectid" : sid}).Limit(1).One(mySubject)
+  if err != nil{
+    log.Println("Could not get subject.")
+    return nil,err
+  }
+  return mySubject,err
+}
+
 func displaySubjectPage(w http.ResponseWriter, r *http.Request){
   log.Println("Displaying subject page to user.")
   var mySubjectPage SubjectPage

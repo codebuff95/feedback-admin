@@ -9,6 +9,7 @@ import(
   "feedback-admin/database"
   "feedback-admin/faculty"
   "feedback-admin/password"
+  "feedback-admin/subject"
   "feedback-admin/templates"
   "net/http"
   "strconv"
@@ -20,8 +21,8 @@ import(
 )
 
 type Teacher struct{
-  faculty.Faculty
-  Subjectid string
+  Facultyid string `bson:"facultyid"`
+  Subjectid string `bson:"subjectid"`
 }
 
 type Section struct{
@@ -30,7 +31,7 @@ type Section struct{
   Year int `bson:"year"`
   Session int `bson:"session"`
   Courseid string `bson:"courseid"`
-  Teachers []Teacher `bson:"teachers"`
+  Teachers *[]Teacher `bson:"teachers,omitempty"`
   Password string `bson:"password"`
   Students int `bson:"students"`
   Addedon string  `bson:"addedon"`
@@ -60,6 +61,17 @@ func GetSections(mysession string) (*[]Section,error){
     return nil,nil
   }
   return &mySectionSlice,nil
+}
+
+func GetSection(sectionid string) (*Section,error){
+  log.Println("Getting section with sectionid:",sectionid)
+  var mySection *Section = &Section{}
+  err := database.SectionCollection.Find(bson.M{"sectionid" : sectionid}).Limit(1).One(mySection)
+  if err != nil{
+    log.Println("Could not get section.")
+    return nil,err
+  }
+  return mySection,nil
 }
 
 func displaySectionPage(w http.ResponseWriter, r *http.Request){
@@ -216,4 +228,79 @@ func RemoveSection(id string) (int,error){
     return 0,err
   }
   return changeinfo.Removed,err
+}
+
+func AddTeacherHandler(w http.ResponseWriter, r *http.Request){
+  log.Println("***ADD TEACHER HANDLER***")
+  log.Println("Serving client:",r.RemoteAddr)
+  _, err := user.AuthenticateRequest(r)
+  if err != nil{ //user session not authentic. Redirect to login page.
+    log.Println("User session is not authentic, displaying badpage.")
+    //http.Redirect(w, r, "/login", http.StatusSeeOther)
+    displayBadPage(w,r,err)
+    return
+  }
+  log.Println("User Session is authentic. Validating form and Parsing form for new teacher data.")
+
+  if r.Method != "POST"{
+    displayBadPage(w,r,errors.New("Please add new teacher properly"))
+    return
+  }
+  r.ParseForm()
+
+  _,err = formsession.ValidateSession(r.Form.Get("formsid"))
+  if err != nil{
+    log.Println("Error validating formSid:",err,". Displaying badpage.")
+    displayBadPage(w,r,err)
+    return
+  }
+
+  enteredSectionId := template.HTMLEscapeString(r.Form.Get("sectionid"))
+
+  _,err = GetSection(enteredSectionId)
+
+  if err != nil{
+    log.Println("Bad Sectionid:",err)
+    displayBadPage(w,r,errors.New("Bad Section ID"))
+    return
+  }
+
+  enteredFacultyId := template.HTMLEscapeString(r.Form.Get("facultyid"))
+
+  _,err = faculty.GetFaculty(enteredFacultyId)
+
+  if err != nil{
+    log.Println("Bad Facultyid:",err)
+    displayBadPage(w,r,errors.New("Bad Faculty ID"))
+    return
+  }
+
+  enteredSubjectId := template.HTMLEscapeString(r.Form.Get("subjectid"))
+
+  _,err = subject.GetSubject(enteredSubjectId)
+
+  if err != nil{
+    log.Println("Bad Subjectid:",err)
+    displayBadPage(w,r,errors.New("Bad Subject ID"))
+    return
+  }
+
+  myNewTeacher := &Teacher{Facultyid : enteredFacultyId, Subjectid : enteredSubjectId}
+  log.Println("Adding new teacher to sectionid:",enteredSectionId," with details:",*myNewTeacher)
+  err = AddTeacher(enteredSectionId,myNewTeacher)
+  if err != nil{
+    log.Println("Error adding teacher to sectionid:",enteredSectionId,":",err)
+    displayBadPage(w,r,err)
+    return
+  }
+  log.Println("Successfully added new teacher to sectionid:",enteredSectionId," with FacultyId:",enteredFacultyId,", SubjectId:",enteredSubjectId)
+  http.Redirect(w, r, "/home", http.StatusSeeOther)
+}
+
+func AddTeacher(sectionId string, myTeacher *Teacher) error{
+  _,err := GetSection(sectionId)
+  if err != nil{
+    return err
+  }
+  return database.SectionCollection.Update(bson.M{"sectionid" : sectionId},bson.M{"$push":bson.M{"facultyid":myTeacher.Facultyid,"subjectid":myTeacher.Subjectid}})
 }

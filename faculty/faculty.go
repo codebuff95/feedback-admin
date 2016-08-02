@@ -41,6 +41,17 @@ func GetFacultys() (*[]Faculty,error){
   return &myFacultySlice,nil
 }
 
+func GetFaculty(fid string) (*Faculty,error){
+  log.Println("Getting faculty with facultyid:",fid)
+  var myFaculty *Faculty = &Faculty{}
+  err := database.FacultyCollection.Find(bson.M{"facultyid" : fid}).Limit(1).One(myFaculty)
+  if err != nil{
+    log.Println("Could not get faculty.")
+    return nil,err
+  }
+  return myFaculty,err
+}
+
 func displayFacultyPage(w http.ResponseWriter, r *http.Request){
   log.Println("Displaying faculty page to user.")
   var myFacultyPage FacultyPage

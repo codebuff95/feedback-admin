@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Feedback - Admin: Faculty</title>
+  </head>
+  <body>
+      {{if not .Facultys}}
+        No faculties added.
+      {{else}}
+        Added facultys are:<br>
+        <table>
+          <tr>
+            <td>
+              Faculty ID
+            </td>
+            <td>
+              Faculty Name
+            </td>
+            <td>
+              Added On
+            </td>
+            <td>
+              Remove Faculty
+            </td>
+          </tr>
+          {{range .Facultys}}
+            <tr>
+              <td>
+                {{.Facultyid}}
+              </td>
+              <td>
+                {{.Facultyname}}
+              </td>
+              <td>
+                {{.Addedon}}
+              </td>
+              <td>
+                <a href="/removefaculty/{{.Facultyid}}">Remove</a>
+              </td>
+            </tr>
+          {{end}}
+        </table>
+      {{end}}
+      <br><br>
+      Add a new faculty:
+      <form method="POST" action="/addfaculty">
+        Faculty ID: <input type="text" name="facultyid" placeholder="Enter Faculty ID">
+        Faculty Name: <input type="text" name="facultyname" placeholder="Enter Faculty Name">
+        <input type="hidden" name="formsid" value="{{.FormSid}}">
+        <input type="submit" value="Add Faculty" name="submit">
+      </form>
+      <br><br>
+      <a href="/home"> Go back to home. </a>
+  </body>
+</html>

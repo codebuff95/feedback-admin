@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Feedback - Admin: Course</title>
+  </head>
+  <body>
+      {{if not .Courses}}
+        No courses added.
+      {{else}}
+        Added courses are:<br>
+        <table>
+          <tr>
+            <td>
+              Course ID
+            </td>
+            <td>
+              Course Name
+            </td>
+            <td>
+              Added On
+            </td>
+            <td>
+              Remove Course
+            </td>
+          </tr>
+          {{range .Courses}}
+            <tr>
+              <td>
+                {{.Courseid}}
+              </td>
+              <td>
+                {{.Coursename}}
+              </td>
+              <td>
+                {{.Addedon}}
+              </td>
+              <td>
+                <a href="/removecourse/{{.Courseid}}">Remove</a>
+              </td>
+            </tr>
+          {{end}}
+        </table>
+      {{end}}
+      <br><br>
+      Add a new course:
+      <form method="POST" action="/addcourse">
+        Course ID: <input type="text" name="courseid" placeholder="Enter Course ID">
+        Course Name: <input type="text" name="coursename" placeholder="Enter Course Name">
+        <input type="hidden" name="formsid" value="{{.FormSid}}">
+        <input type="submit" value="Add Course" name="submit">
+      </form>
+      <br><br>
+      <a href="/home"> Go back to home. </a>
+  </body>
+</html>

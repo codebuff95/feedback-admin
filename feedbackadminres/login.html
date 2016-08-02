@@ -1,0 +1,12 @@
+<html>
+  <head>
+    <title>Feedback - Admin: Login</title>
+  </head>
+  <body>
+    <form method="POST" action="/login">
+      <input type="text" name="username" placeholder="Enter Username">
+      <input type="password" name="password" placeholder="Enter Password">
+      <input type="hidden" name="formsid" value="{{.}}">
+      <input type="submit" name="Submit" value="Login">
+    </form>
+</html>

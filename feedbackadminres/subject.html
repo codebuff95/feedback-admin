@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Feedback - Admin: Subject</title>
+  </head>
+  <body>
+      {{if not .Subjects}}
+        No subjects added.
+      {{else}}
+        Added subjects are:<br>
+        <table>
+          <tr>
+            <td>
+              Subject ID
+            </td>
+            <td>
+              Subject Name
+            </td>
+            <td>
+              Added On
+            </td>
+            <td>
+              Remove Subject
+            </td>
+          </tr>
+          {{range .Subjects}}
+            <tr>
+              <td>
+                {{.Subjectid}}
+              </td>
+              <td>
+                {{.Subjectname}}
+              </td>
+              <td>
+                {{.Addedon}}
+              </td>
+              <td>
+                <a href="/removesubject/{{.Subjectid}}">Remove</a>
+              </td>
+            </tr>
+          {{end}}
+        </table>
+      {{end}}
+      <br><br>
+      Add a new subject:
+      <form method="POST" action="/addsubject">
+        Subject ID: <input type="text" name="subjectid" placeholder="Enter Subject ID">
+        Subject Name: <input type="text" name="subjectname" placeholder="Enter Subject Name">
+        <input type="hidden" name="formsid" value="{{.FormSid}}">
+        <input type="submit" value="Add Subject" name="submit">
+      </form>
+      <br><br>
+      <a href="/home"> Go back to home. </a>
+  </body>
+</html>

@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>Feedback - Admin: Course</title>
+  </head>
+  <body>
+      {{if not .Sections}}
+        No sections added.
+      {{else}}
+        Added sections are:<br>
+        <table>
+          <tr>
+            <td>
+              Section ID
+            </td>
+            <td>
+              Section Name
+            </td>
+            <td>
+              Year
+            </td>
+            <td>
+              Academic Session
+            </td>
+            <td>
+              Course ID
+            </td>
+            <td>
+              No of Students
+            </td>
+            <td>
+              Password
+            </td>
+            <td>
+              Added On
+            </td>
+          </tr>
+          {{range .Sections}}
+            <tr>
+              <td>
+                {{.Sectionid}}
+              </td>
+              <td>
+                {{.Sectionname}}
+              </td>
+              <td>
+                {{.Year}}
+              </td>
+              <td>
+                {{.Session}}
+              </td>
+              <td>
+                {{.Courseid}}
+              </td>
+              <td>
+                {{.Students}}
+              </td>
+              <td>
+                {{.Password}}
+              </td>
+              <td>
+                {{.Addedon}}
+              </td>
+              <td>
+                <a href="/removesection/{{.Sectionid}}">Remove</a>
+              </td>
+            </tr>
+          {{end}}
+        </table>
+      {{end}}
+      <br><br>
+      Add a new section in this session:
+      <form method="POST" action="/addsection">
+        Section ID: <input type="text" name="sectionid" placeholder="Enter Section ID">
+        Section Name: <input type="text" name="sectionname" placeholder="Enter Section Name">
+        <br>
+        Section Year: <input type="text" name="sectionyear" placeholder="Enter Section Year">
+        Section Session: {{.Session}}
+        <input type="hidden" name="sectionsession" value="{{.Session}}">
+        <br>
+        Section Course ID: <input type="text" name="sectioncourseid" placeholder="Enter Section Course ID">
+        Section Students: <input type="text" name="sectionstudents" placeholder="Enter Section Students">
+        <br>
+        <input type="hidden" name="formsid" value="{{.FormSid}}">
+        <input type="submit" value="Add Course" name="submit">
+        <br>
+
+      </form>
+      <br><br>
+      <a href="/home"> Go back to home. </a>
+  </body>
+</html>

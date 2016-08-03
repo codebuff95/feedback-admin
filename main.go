@@ -23,7 +23,8 @@ func handlefatalerror(err error){
 
 func main(){
 
-  err := uafm.Init("feedbackadminres")
+  err := uafm.Init("feedbackadminres","adminsession","formsession")//make sure that
+  // usersession collection of admin and student account types are different.
   handlefatalerror(err)
 
   err = database.InitDatabaseSession()

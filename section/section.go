@@ -51,7 +51,7 @@ func GetSections(mysession string) (*[]Section,error){
     return nil,err
   }
   var mySectionSlice []Section
-  err = database.SectionCollection.Find(bson.M{"session":mysessionint}).Sort("year","sectionid").All(&mySectionSlice)
+  err = database.SectionCollection.Find(bson.M{"session":mysessionint}).Sort("courseid","year","sectionid").All(&mySectionSlice)
   if err != nil{
     log.Println("Error finding sections:",err)
     return nil,err

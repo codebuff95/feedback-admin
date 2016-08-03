@@ -54,7 +54,10 @@ func main(){
   http.HandleFunc("/addsection",section.AddSectionHandler)
   http.HandleFunc("/removesection/",section.RemoveSectionHandler)
   http.HandleFunc("/addteacher",section.AddTeacherHandler)
-  //http.HandleFunc("/removeteacher",section.RemoveTeacherHandler)
+  http.HandleFunc("/removeteacher",section.RemoveTeacherHandler)
+
+  //Serving static files: only files in directory feedbackadminres/publicres are being made public (for security purposes)
+  http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("feedbackadminres/publicres"))))
 
   http.ListenAndServe(":8080",nil)
 }

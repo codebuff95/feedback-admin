@@ -51,7 +51,7 @@ func GetSections(mysession string) (*[]Section,error){
     return nil,err
   }
   var mySectionSlice []Section
-  err = database.SectionCollection.Find(bson.M{"session":mysessionint}).All(&mySectionSlice)
+  err = database.SectionCollection.Find(bson.M{"session":mysessionint}).Sort("year","sectionid").All(&mySectionSlice)
   if err != nil{
     log.Println("Error finding sections:",err)
     return nil,err
@@ -59,6 +59,11 @@ func GetSections(mysession string) (*[]Section,error){
   log.Println("Success getting sectionSlice of size:",len(mySectionSlice))
   if len(mySectionSlice) == 0{
     return nil,nil
+  }
+  for i := 0; i < len(mySectionSlice); i++{
+    if len(*mySectionSlice[i].Teachers) == 0{
+      mySectionSlice[i].Teachers = nil
+    }
   }
   return &mySectionSlice,nil
 }
@@ -79,7 +84,11 @@ func displaySectionPage(w http.ResponseWriter, r *http.Request){
   r.ParseForm()
   mysession := r.Form.Get("sectionsession")
   //validate my session
-
+  mySessionInt,err := strconv.Atoi(mysession)
+  if err != nil || mySessionInt < 1990 || mySessionInt > 2030{
+    displayBadPage(w,r,errors.New("Bad Session"))
+    return
+  }
   //
   var mySectionPage SectionPage
   formSid, err := formsession.CreateSession("0",time.Minute*10) //Form created will be valid for 10 minutes.
@@ -302,5 +311,85 @@ func AddTeacher(sectionId string, myTeacher *Teacher) error{
   if err != nil{
     return err
   }
-  return database.SectionCollection.Update(bson.M{"sectionid" : sectionId},bson.M{"$push":bson.M{"facultyid":myTeacher.Facultyid,"subjectid":myTeacher.Subjectid}})
+  return database.SectionCollection.Update(bson.M{"sectionid" : sectionId},bson.M{"$push":bson.M{"teachers" : myTeacher}})
+}
+
+func RemoveTeacherHandler(w http.ResponseWriter, r *http.Request){
+  log.Println("***REMOVE TEACHER HANDLER***")
+  log.Println("Serving client:",r.RemoteAddr)
+  _, err := user.AuthenticateRequest(r)
+  if err != nil{ //user session not authentic. Redirect to login page.
+    log.Println("User session is not authentic, displaying badpage.")
+    //http.Redirect(w, r, "/login", http.StatusSeeOther)
+    displayBadPage(w,r,err)
+    return
+  }
+  log.Println("User Session is authentic. Validating form and Parsing form for remove teacher data.")
+
+  if r.Method != "POST"{
+    displayBadPage(w,r,errors.New("Please remove teacher properly"))
+    return
+  }
+  r.ParseForm()
+
+  _,err = formsession.ValidateSession(r.Form.Get("formsid"))
+  if err != nil{
+    log.Println("Error validating formSid:",err,". Displaying badpage.")
+    displayBadPage(w,r,err)
+    return
+  }
+
+  enteredSectionId := template.HTMLEscapeString(r.Form.Get("sectionid"))
+
+  _,err = GetSection(enteredSectionId)
+
+  if err != nil{
+    log.Println("Bad Sectionid:",err)
+    displayBadPage(w,r,errors.New("Bad Section ID"))
+    return
+  }
+
+  enteredFacultyId := template.HTMLEscapeString(r.Form.Get("facultyid"))
+
+  _,err = faculty.GetFaculty(enteredFacultyId)
+
+  if err != nil{
+    log.Println("Bad Facultyid:",err)
+    displayBadPage(w,r,errors.New("Bad Faculty ID"))
+    return
+  }
+
+  enteredSubjectId := template.HTMLEscapeString(r.Form.Get("subjectid"))
+
+  _,err = subject.GetSubject(enteredSubjectId)
+
+  if err != nil{
+    log.Println("Bad Subjectid:",err)
+    displayBadPage(w,r,errors.New("Bad Subject ID"))
+    return
+  }
+
+  myTeacher := &Teacher{Facultyid : enteredFacultyId, Subjectid : enteredSubjectId}
+  log.Println("Removing teacher from sectionid:",enteredSectionId," with details:",*myTeacher)
+  err = RemoveTeacher(enteredSectionId,myTeacher)
+  if err != nil{
+    log.Println("Error removing teacher from sectionid:",enteredSectionId,":",err)
+    displayBadPage(w,r,err)
+    return
+  }
+  log.Println("Successfully removed teacher from sectionid:",enteredSectionId," with FacultyId:",enteredFacultyId,", SubjectId:",enteredSubjectId)
+  http.Redirect(w, r, "/home", http.StatusSeeOther)
+}
+
+func RemoveTeacher(sectionId string, myTeacher *Teacher) error{
+  _,err := GetSection(sectionId)
+  if err != nil{
+    return err
+  }
+  err = database.SectionCollection.Update(bson.M{"sectionid" : sectionId},bson.M{"$pull":bson.M{"teachers" : myTeacher}})
+  if err != nil{
+    return err
+  }
+  return err
+  //check if teacher array of section with sectionid = sectionId is empty. if yes, $unset teacher array.
 }

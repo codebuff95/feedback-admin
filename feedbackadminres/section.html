@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="stylesheet" href="/resources/style.css">
     <title>Feedback - Admin: Sections</title>
   </head>
   <body>
@@ -39,6 +40,9 @@
             </td>
             <td>
               Remove Section
+            </td>
+            <td>
+              Add Teacher to Section
             </td>
           </tr>
           {{range $currsection := .Sections}}
@@ -98,21 +102,6 @@
                       </td>
                     </tr>
                   {{end}}
-                  <form method="POST" action="/addteacher">
-                    <tr>
-                      <td>
-                        <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
-                        <input type="hidden" name="formsid" value="{{$.FormSid}}">
-                        <input type="text" name="facultyid" placeholder="Faculty ID">
-                      </td>
-                      <td>
-                        <input type="text" name="subjectid" placeholder="Subject ID">
-                      </td>
-                      <td>
-                        <input type="Submit" value="Add">
-                      </td>
-                    </tr>
-                  </form>
                 </table>
                 {{end}}
               </td>
@@ -121,6 +110,15 @@
               </td>
               <td>
                 <a href="/removesection/{{.Sectionid}}">Remove</a>
+              </td>
+              <td>
+                <form method="POST" action="/addteacher">
+                      <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
+                      <input type="hidden" name="formsid" value="{{$.FormSid}}">
+                      <input type="text" name="facultyid" placeholder="Faculty ID">
+                      <input type="text" name="subjectid" placeholder="Subject ID">
+                      <input type="Submit" value="Add">
+                </form>
               </td>
             </tr>
           {{end}}

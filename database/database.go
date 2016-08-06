@@ -16,6 +16,7 @@ var CourseCollection *mgo.Collection
 var SubjectCollection *mgo.Collection
 var FacultyCollection *mgo.Collection
 var SectionCollection *mgo.Collection
+var FeedbackCollection *mgo.Collection
 
 type DatabaseDetails struct{
   Url string `json:"url"`
@@ -63,4 +64,5 @@ func InitCollections(){
   SubjectCollection = DatabaseSession.DB(DatabaseName).C("subject")
   FacultyCollection = DatabaseSession.DB(DatabaseName).C("faculty")
   SectionCollection = DatabaseSession.DB(DatabaseName).C("section")
+  FeedbackCollection = DatabaseSession.DB(DatabaseName).C("feedback")
 }

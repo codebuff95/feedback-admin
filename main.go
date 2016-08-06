@@ -5,8 +5,10 @@ import(
   "feedback-admin/login"
   "feedback-admin/logout"
   "feedback-admin/database"
+  "feedback-admin/college"
   "feedback-admin/subject"
   "feedback-admin/faculty"
+  "feedback-admin/report"
   "feedback-admin/section"
   "feedback-admin/templates"
   "feedback-admin/home"
@@ -35,6 +37,9 @@ func main(){
   err = templates.InitEssentialTemplates()
   handlefatalerror(err)
 
+  err = college.InitCollegeDetails()
+  handlefatalerror(err)
+
   http.HandleFunc("/login",login.LoginHandler)
   http.HandleFunc("/home",home.HomeHandler)
   http.HandleFunc("/logout",logout.LogoutHandler)
@@ -56,6 +61,9 @@ func main(){
   http.HandleFunc("/removesection/",section.RemoveSectionHandler)
   http.HandleFunc("/addteacher",section.AddTeacherHandler)
   http.HandleFunc("/removeteacher",section.RemoveTeacherHandler)
+
+  http.HandleFunc("/report",report.ReportHandler)
+  http.HandleFunc("/sectionwisereport",report.SectionWiseReportHandler)
 
   //Serving static files: only files in directory feedbackadminres/publicres are being made public (for security purposes)
   http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("feedbackadminres/publicres"))))

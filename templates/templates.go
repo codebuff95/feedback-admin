@@ -2,6 +2,7 @@ package templates
 
 import(
   "html/template"
+  texttemplate "text/template"
   "log"
 )
 
@@ -12,6 +13,8 @@ var CoursePageTemplate *template.Template
 var SubjectPageTemplate *template.Template
 var FacultyPageTemplate *template.Template
 var SectionPageTemplate *template.Template
+var ReportOptionsPageTemplate *template.Template
+var SectionWiseReportTemplate *texttemplate.Template
 
 func InitEssentialTemplates() error{
   var err error
@@ -50,5 +53,16 @@ func InitEssentialTemplates() error{
     log.Println("Error parsing SectionPageTemplate:",err)
     return err
   }
+  ReportOptionsPageTemplate,err = template.ParseFiles("feedbackadminres/reportoptions.html")
+  if err != nil{
+    log.Println("Error parsing ReportOptionsPageTemplate:",err)
+    return err
+  }
+  SectionWiseReportTemplate,err = texttemplate.ParseFiles("feedbackadminres/reporttemplates/sectionwise")
+  if err != nil{
+    log.Println("Error parsing SectionWiseReportTemplate:",err)
+    return err
+  }
+
   return nil
 }

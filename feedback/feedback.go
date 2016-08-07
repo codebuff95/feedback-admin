@@ -1,6 +1,9 @@
 package feedback
 
 import(
+  "feedback-admin/database"
+  //"gopkg.in/mgo.v2"
+  "gopkg.in/mgo.v2/bson"
 )
 
 type Feedback struct{
@@ -18,4 +21,16 @@ type Rating struct{
 type Point struct{
   Questionid string `bson:"questionid"`
   Marks int `bson:"marks"`
+}
+
+func GetFeedbacks(sectionId string) (*[]Feedback,error){
+  var myFeedbackSlice []Feedback
+  err := database.FeedbackCollection.Find(bson.M{"sectionid":sectionId}).All(&myFeedbackSlice)
+  if err != nil{
+    return nil,err
+  }
+  if len(myFeedbackSlice) == 0{
+    return nil,nil
+  }
+  return &myFeedbackSlice,nil
 }

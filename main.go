@@ -59,11 +59,13 @@ func main(){
   http.HandleFunc("/section",section.SectionHandler)
   http.HandleFunc("/addsection",section.AddSectionHandler)
   http.HandleFunc("/removesection/",section.RemoveSectionHandler)
+  http.HandleFunc("/generatesectionpasswords",section.GenerateSectionPasswordsHandler)
   http.HandleFunc("/addteacher",section.AddTeacherHandler)
   http.HandleFunc("/removeteacher",section.RemoveTeacherHandler)
 
   http.HandleFunc("/report",report.ReportHandler)
   http.HandleFunc("/sectionwisereport",report.SectionWiseReportHandler)
+  http.HandleFunc("/subjectwisereport",report.SubjectWiseReportHandler)
 
   //Serving static files: only files in directory feedbackadminres/publicres are being made public (for security purposes)
   http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("feedbackadminres/publicres"))))

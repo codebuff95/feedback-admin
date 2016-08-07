@@ -18,6 +18,7 @@ import(
   "errors"
   "html/template"
   "gopkg.in/mgo.v2/bson"
+  "os"
 )
 
 type Teacher struct{
@@ -39,7 +40,7 @@ type Section struct{
   Session int `bson:"session"`
   Courseid string `bson:"courseid"`
   Teachers *[]Teacher `bson:"teachers,omitempty"`
-  Password string `bson:"password"`
+  Passwords *[]string `bson:"passwords"`
   Students int `bson:"students"`
   Addedon string  `bson:"addedon"`
 }
@@ -65,13 +66,20 @@ func GetSections(mysession string) (*[]Section,error){
   }
   log.Println("Success getting sectionSlice of size:",len(mySectionSlice))
   if len(mySectionSlice) == 0{
+    log.Println("Length of mySectionSlice is 0. Returning nil Section Slice.")
     return nil,nil
   }
   for i := 0; i < len(mySectionSlice); i++{
-    if len(*mySectionSlice[i].Teachers) == 0{
+    if mySectionSlice[i].Teachers != nil && len(*mySectionSlice[i].Teachers) == 0{
+      log.Println("nilling teachers for section ID:",mySectionSlice[i].Sectionid)
       mySectionSlice[i].Teachers = nil
     }
+    if mySectionSlice[i].Passwords != nil && len(*mySectionSlice[i].Passwords) == 0{
+      log.Println("nilling passwords for section ID:",mySectionSlice[i].Sectionid)
+      mySectionSlice[i].Passwords = nil
+    }
   }
+  log.Println("Returning mySectionSlice")
   return &mySectionSlice,nil
 }
 
@@ -108,6 +116,7 @@ func displaySectionPage(w http.ResponseWriter, r *http.Request){
   log.Println("Creating new Section page to client",r.RemoteAddr,"with formSid:",*mySectionPage.FormSid)  //Enter client ip address and new form SID.
   mySectionPage.Session = &mysession
   mySectionPage.Sections,_ = GetSections(mysession)
+  log.Println("Executing SectionPageTemplate")
   templates.SectionPageTemplate.Execute(w,mySectionPage)
 }
 
@@ -182,8 +191,6 @@ func AddSectionHandler(w http.ResponseWriter, r *http.Request){
     return
   }
 
-  myPassword := password.GenerateRandomPassword()
-
   enteredStudents,err := strconv.Atoi(template.HTMLEscapeString(r.Form.Get("sectionstudents")))
 
   if err != nil{
@@ -192,8 +199,10 @@ func AddSectionHandler(w http.ResponseWriter, r *http.Request){
     return
   }
 
+  myPasswords := password.GenerateRandomPasswords(enteredStudents)
+
   addedOn := time.Now().Format("2006-01-02 15:04:05")
-  myNewSection := &Section{Sectionid : enteredSectionId, Sectionname : enteredSectionName, Year : enteredSectionYear, Session : enteredSectionSession, Courseid : enteredCourseId, Students : enteredStudents, Password : myPassword, Addedon : addedOn}
+  myNewSection := &Section{Sectionid : enteredSectionId, Sectionname : enteredSectionName, Year : enteredSectionYear, Session : enteredSectionSession, Courseid : enteredCourseId, Students : enteredStudents, Passwords : &myPasswords, Addedon : addedOn}
   log.Println("Adding new Section with details:",*myNewSection)
   err = AddSection(myNewSection)
   if err != nil{
@@ -425,4 +434,40 @@ func GetDetailedTeachers(myTeachers *[]Teacher) (*[]DetailedTeacher,error){
   }
   log.Println("Success getting DetailedTeachers from Teachers. Returning slice of DetailedTeachers")
   return &myDetailedTeachers,nil
+}
+
+func GenerateSectionPasswordsHandler(w http.ResponseWriter, r *http.Request){
+  log.Println("***GENERATE SECTION PASSWORDS HANDLER***")
+  log.Println("Serving client:",r.RemoteAddr)
+  _, err := user.AuthenticateRequest(r)
+  if err != nil{ //user session not authentic. Redirect to login page.
+    log.Println("User session is not authentic, displaying badpage.")
+    //http.Redirect(w, r, "/login", http.StatusSeeOther)
+    displayBadPage(w,r,err)
+    return
+  }
+  log.Println("User Session is authentic")
+  if r.Method != "POST"{
+    displayBadPage(w,r,errors.New("Please generate passwords properly"))
+    return
+  }
+  r.ParseForm()
+  mySectionId := template.HTMLEscapeString(r.Form.Get("sectionid"))
+  mySection,err := GetSection(mySectionId)
+  if err != nil || mySection == nil{
+    log.Println("Error finding section with section ID:",mySectionId)
+    displayBadPage(w,r,errors.New("Section with submitted SectionID not found"))
+    return
+  }
+  log.Println("Successfully got section with section ID:",mySectionId)
+  filewriter, err := os.Create("password-"+mySection.Sectionid+".csv")
+  defer filewriter.Close()
+  if err != nil{
+    log.Println("Problem opening file for writing")
+    displayBadPage(w,r,errors.New("Problem opening file for creating passwords"))
+    return
+  }
+  templates.PasswordsTemplate.Execute(filewriter,mySection)
+  http.Redirect(w, r, "/home", http.StatusSeeOther)
+  return
 }

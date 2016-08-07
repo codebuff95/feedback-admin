@@ -15,6 +15,8 @@ var FacultyPageTemplate *template.Template
 var SectionPageTemplate *template.Template
 var ReportOptionsPageTemplate *template.Template
 var SectionWiseReportTemplate *texttemplate.Template
+var SubjectWiseReportTemplate *texttemplate.Template
+var PasswordsTemplate *texttemplate.Template
 
 func InitEssentialTemplates() error{
   var err error
@@ -61,6 +63,16 @@ func InitEssentialTemplates() error{
   SectionWiseReportTemplate,err = texttemplate.ParseFiles("feedbackadminres/reporttemplates/sectionwise")
   if err != nil{
     log.Println("Error parsing SectionWiseReportTemplate:",err)
+    return err
+  }
+  SubjectWiseReportTemplate,err = texttemplate.ParseFiles("feedbackadminres/reporttemplates/subjectwise")
+  if err != nil{
+    log.Println("Error parsing SubjectWiseReportTemplate:",err)
+    return err
+  }
+  PasswordsTemplate,err = texttemplate.ParseFiles("feedbackadminres/reporttemplates/passwords")
+  if err != nil{
+    log.Println("Error parsing PasswordsTemplate:",err)
     return err
   }
 

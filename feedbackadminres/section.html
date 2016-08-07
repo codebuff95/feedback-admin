@@ -30,7 +30,7 @@
               No of Students
             </td>
             <td>
-              Password
+              Passwords
             </td>
             <td>
               Teachers
@@ -66,7 +66,14 @@
                 {{.Students}}
               </td>
               <td>
-                {{.Password}}
+                {{if not .Passwords}}
+                This section has no remaining passwords
+                {{else}}
+                <form method="POST" action="/generatesectionpasswords">
+                  <input type="hidden" name="sectionid" value="{{.Sectionid}}">
+                  <input type="submit" value="Generate Passwords">
+                </form>
+                {{end}}
               </td>
               <td>
                 {{if not .Teachers}}
@@ -138,7 +145,7 @@
         Section Students: <input type="text" name="sectionstudents" placeholder="Enter Section Students">
         <br>
         <input type="hidden" name="formsid" value="{{$.FormSid}}">
-        <input type="submit" value="Add Course" name="submit">
+        <input type="submit" value="Add Section" name="submit">
         <br>
 
       </form>

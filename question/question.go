@@ -3,6 +3,7 @@ package question
 import(
   "feedback-admin/database"
   "log"
+  "errors"
 )
 
 type Question struct{
@@ -25,4 +26,13 @@ func GetAllQuestionsWeightage() (int,error){
     sum += myQuestionSlice[i].Weightage
   }
   return sum,nil
+}
+
+func GetQuestions() (*[]Question,error){
+  var myQuestions []Question
+  err := database.QuestionCollection.Find(nil).All(&myQuestions)
+  if len(myQuestions) == 0 || err != nil{
+    return nil,errors.New("No questions found")
+  }
+  return &myQuestions,nil
 }

@@ -1,0 +1,12 @@
+,{{.Collegename}}
+
+SECTION, {{.Sectionname}}, {{.Sectionid}}
+
+{{range .PointWiseTeachers}}
+Faculty Name, {{.Facultyname}} ({{.Facultyid}})
+
+Student,{{range $.Students}}{{.}},{{end}}
+{{range .Questions}}{{.Text}},{{range .Ratings}}{{.}},{{end}}
+{{end}}
+
+{{end}}

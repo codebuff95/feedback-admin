@@ -66,6 +66,7 @@ func main(){
   http.HandleFunc("/report",report.ReportHandler)
   http.HandleFunc("/sectionwisereport",report.SectionWiseReportHandler)
   http.HandleFunc("/subjectwisereport",report.SubjectWiseReportHandler)
+  http.HandleFunc("/pointwisereport",report.PointWiseReportHandler)
 
   //Serving static files: only files in directory feedbackadminres/publicres are being made public (for security purposes)
   http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("feedbackadminres/publicres"))))

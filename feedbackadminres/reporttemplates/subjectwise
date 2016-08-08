@@ -1,7 +1,7 @@
 ,{{.Collegename}}
 SUBJECT WISE FEEDBACK OF FACULTY
 
-SECTION, {{.Sectionname}}
+SECTION, {{.Sectionname}}, {{.Sectionid}}
 
 Name of Faculty, Subject ID, Total Number of Feedbacks, Total Score, Average Feedback (out of {{.Outof}}), Percentage
 {{range .Customfeedbacks}}{{.Facultyname}} ({{.Facultyid}}), {{.Subjectid}}, {{.Totalfeedbacks}}, {{.Totalscore}}, {{.Average}}, {{.Percentage}}

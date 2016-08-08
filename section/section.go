@@ -210,7 +210,7 @@ func AddSectionHandler(w http.ResponseWriter, r *http.Request){
     return
   }
   log.Println("Successfully added new Section with Id:",enteredSectionId,", name:",enteredSectionName)
-  http.Redirect(w, r, "/home", http.StatusSeeOther)
+  http.Redirect(w, r, "/section?sectionsession="+strconv.Itoa(enteredSectionSession), http.StatusSeeOther)
 }
 
 
@@ -232,6 +232,7 @@ func RemoveSectionHandler(w http.ResponseWriter,r *http.Request){
   }
 
   mySectionId := template.HTMLEscapeString(r.URL.Path[len("/removesection/"):])
+  mySection,_ := GetSection(mySectionId)
   _,err = RemoveSection(mySectionId)
   if err != nil{
     log.Println("Problem removing Section:",err)
@@ -239,7 +240,7 @@ func RemoveSectionHandler(w http.ResponseWriter,r *http.Request){
     return
   }
   log.Println("Success removing Section:",mySectionId)
-  http.Redirect(w, r, "/home", http.StatusSeeOther)
+  http.Redirect(w, r, "/section?sectionsession="+strconv.Itoa(mySection.Session), http.StatusSeeOther)
 }
 
 
@@ -282,7 +283,7 @@ func AddTeacherHandler(w http.ResponseWriter, r *http.Request){
 
   enteredSectionId := template.HTMLEscapeString(r.Form.Get("sectionid"))
 
-  _,err = GetSection(enteredSectionId)
+  mySection,err := GetSection(enteredSectionId)
 
   if err != nil{
     log.Println("Bad Sectionid:",err)
@@ -319,7 +320,7 @@ func AddTeacherHandler(w http.ResponseWriter, r *http.Request){
     return
   }
   log.Println("Successfully added new teacher to sectionid:",enteredSectionId," with FacultyId:",enteredFacultyId,", SubjectId:",enteredSubjectId)
-  http.Redirect(w, r, "/home", http.StatusSeeOther)
+  http.Redirect(w, r, "/section?sectionsession="+strconv.Itoa(mySection.Session), http.StatusSeeOther)
 }
 
 func AddTeacher(sectionId string, myTeacher *Teacher) error{
@@ -468,6 +469,6 @@ func GenerateSectionPasswordsHandler(w http.ResponseWriter, r *http.Request){
     return
   }
   templates.PasswordsTemplate.Execute(filewriter,mySection)
-  http.Redirect(w, r, "/home", http.StatusSeeOther)
+  http.Redirect(w, r, "/section?sectionsession="+strconv.Itoa(mySection.Session), http.StatusSeeOther)
   return
 }

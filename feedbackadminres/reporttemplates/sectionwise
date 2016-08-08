@@ -1,6 +1,6 @@
 ,{{.Collegename}}
 
-{{.Sectionname}}
+SECTION,{{.Sectionname}}, {{.Sectionid}}
 S.No., Student, {{range .Detailedteachers}} {{.Facultyname}}, {{end}}
 , , {{range .Detailedteachers}} {{.Subjectid}}, {{end}}
 {{range .Customfeedbacks}}

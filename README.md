@@ -10,4 +10,4 @@ This application:
 
 3. harnesses MongoDB's powers to help realise all the data-keeping tasks. This was made possible using the MongoDB driver for Go language, mgo (pronounced as mango).
 
-4. has been designed giving data security a paramount importance. Maximum loopholes have been tried to be addressed to.
+4. has been designed keeping data security in mind. Maximum loopholes have been tried to be addressed.

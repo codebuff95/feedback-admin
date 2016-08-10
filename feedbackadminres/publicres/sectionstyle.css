@@ -1,0 +1,102 @@
+body
+	{
+		background-image:url("back1.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-position: center;
+	}
+	.panel
+	{
+		width:600px;
+		margin-top:50px;
+	}
+	h3
+	{
+		color:white;
+		font-size:30px; 
+		font-family:'Raleway','Palatino Linotype', 'Book Antiqua', Palatino, serif; 
+		margin-top:-5px;
+	}
+	#logout
+	{
+		font-size:25px; 
+		color:white; 
+		padding 4px;
+		text-shadow:1px 1px #e6e6e6;
+	}
+	#hline
+	{
+		color:#f2f2f2;
+		border-width:3px; 
+		padding-left:5px; 
+		margin-right:50px; 
+		margin-left:50px;
+	}
+	h1
+	{
+		<!--color:#f44336;-->
+		color:black;
+		font-family: "Raleway","Palatino Linotype", "Book Antiqua", Palatino, serif;
+		font-weight:bold;
+		font-size:50px;
+	}
+	h4
+	{
+		<!--color:#f44336;-->
+		color:black;
+		font-size:20px;
+	}
+	a
+	{
+		color:black;
+	}
+	a:hover
+	{
+		color:black;
+		text-decoration : none;
+	}
+	span
+	{
+		font-size:35px;
+		color:#4CAF50;
+		text-shadow:2px 2px #e6e6e6; 
+	}
+	span:hover
+	{
+		color:#3e8e41;
+		
+	}
+	<!-- modal styling -->
+	label
+	{
+		text-align:left;
+	}
+	button[type=submit]
+	{
+		width:100%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		display: inline-block;
+		border-radius:3px;
+		box-shadow:1px 1px #e6e6e6;
+		background-color: #4CAF50;
+		color:white;
+		font-weight:bold;
+	}
+	input[type=text], input[type=password] 
+	{
+		width: 100%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		display: inline-block;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+		border-radius:3px;
+		box-shadow:1px 1px #e6e6e6;
+	}
+	#big
+	{
+		width:900px; 
+		margin-left:-150px;
+	}

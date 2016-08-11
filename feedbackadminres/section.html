@@ -170,6 +170,7 @@
                     						<tr>
                     							<th><b>Faculty ID</b></th>
                     							<th><b>Subject ID</b></th>
+                                  <th><b>Remove</b></th>
                     						</tr>
                     					</thead>
                     					<tbody>
@@ -177,6 +178,15 @@
                       						<tr>
                       							<td>{{.Facultyid}}</td>
                       							<td>{{.Subjectid}}</td>
+                                    <td>
+                                      <form method="POST" action="/removeteacher">
+                                        <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
+                                        <input type="hidden" name="facultyid" value="{{.Facultyid}}">
+                                        <input type="hidden" name="subjectid" value="{{.Subjectid}}">
+                                        <input type="hidden" name="formsid" value="{{$.FormSid}}">
+                                        <input type="Submit" value="Remove">
+                                      </form>
+                                    </td>
                       						</tr>
                                 {{end}}
                     					</tbody>

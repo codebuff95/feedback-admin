@@ -361,7 +361,7 @@ func RemoveTeacherHandler(w http.ResponseWriter, r *http.Request){
 
   enteredSectionId := template.HTMLEscapeString(r.Form.Get("sectionid"))
 
-  _,err = GetSection(enteredSectionId)
+  mySection,err := GetSection(enteredSectionId)
 
   if err != nil{
     log.Println("Bad Sectionid:",err)
@@ -398,7 +398,7 @@ func RemoveTeacherHandler(w http.ResponseWriter, r *http.Request){
     return
   }
   log.Println("Successfully removed teacher from sectionid:",enteredSectionId," with FacultyId:",enteredFacultyId,", SubjectId:",enteredSubjectId)
-  http.Redirect(w, r, "/home", http.StatusSeeOther)
+  http.Redirect(w, r, "/section?sectionsession="+strconv.Itoa(mySection.Session), http.StatusSeeOther)
 }
 
 func RemoveTeacher(sectionId string, myTeacher *Teacher) error{

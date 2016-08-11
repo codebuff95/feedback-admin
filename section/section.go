@@ -8,6 +8,7 @@ import(
   "feedback-admin/course"
   "feedback-admin/database"
   "feedback-admin/faculty"
+  "feedback-admin/college"
   "feedback-admin/password"
   "feedback-admin/subject"
   "feedback-admin/templates"
@@ -49,6 +50,7 @@ type SectionPage struct{
   Sections *[]Section
   FormSid *string
   Session *string
+  Collegename *string
 }
 
 func GetSections(mysession string) (*[]Section,error){
@@ -113,6 +115,7 @@ func displaySectionPage(w http.ResponseWriter, r *http.Request){
     return
   }
   mySectionPage.FormSid = formSid
+  mySectionPage.Collegename = &college.GlobalDetails.Collegename
   log.Println("Creating new Section page to client",r.RemoteAddr,"with formSid:",*mySectionPage.FormSid)  //Enter client ip address and new form SID.
   mySectionPage.Session = &mysession
   mySectionPage.Sections,_ = GetSections(mysession)

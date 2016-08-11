@@ -69,7 +69,7 @@ type PointWiseQuestion struct{
 }
 
 func displayReportOptionsPage(w http.ResponseWriter, r *http.Request){
-  templates.ReportOptionsPageTemplate.Execute(w,nil)
+  templates.ReportOptionsPageTemplate.Execute(w,college.GlobalDetails.Collegename)
 }
 
 func displayBadPage(w http.ResponseWriter, r *http.Request, err error){

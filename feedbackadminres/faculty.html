@@ -23,7 +23,7 @@
 <nav class="navbar navbar-inverse">
 	 <div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><h3><b>College Name </b></h3></a>		<!-- Put the College name here -->
+			<a class="navbar-brand" href="#"><h3><b>{{.Collegename}}</b></h3></a>		<!-- Put the College name here -->
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
@@ -78,7 +78,7 @@
 					<br>
 					<input type="text" name="facultyid" placeholder="Enter Faculty ID">
 					<br><br>
-					<label><b>Faculty Name<b></label> 
+					<label><b>Faculty Name<b></label>
 					<br>
 					<input type="text" name="facultyname" placeholder="Enter Faculty Name">
 					<br><br>
@@ -92,64 +92,52 @@
 <!-- Add Faculty Modal ends -->
 <!-- List Faculty Modal starts -->
 <div id="ListModal" class="modal fade">
-	<div class="modal-dialog">								<!-- Inserted the if else condition -->
-	<!--{{if not .Faculties}}
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#4CAF50">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body">
-				<center><h2>Faculties Not Added</h2></center>
-			<div>
-		</div>
-	{{else}}-->
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#4CAF50">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<center><h2 class="modal-title" >Faculty Details</h2></center>
 			</div>
 			<div class="modal-body">
-				<table class="table table-hover table-bordered">
-					<thead>													<!-- Make table dynamic -->
-						<tr>
-							<th><b>Faculty ID</b></th>
-							<th><b>Faculty Name</b></th>
-							<th><b>Added On</b></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>123</td>
-							<td>ABC</td>
-							<td>01/01/2000</td>
-						</tr>
-					</tbody>
-				</table>
+        {{if not .Facultys}}
+          No faculties have been added.
+        {{else}}
+  				<table class="table table-hover table-bordered">
+  					<thead>													<!-- Make table dynamic -->
+  						<tr>
+  							<th><b>Faculty ID</b></th>
+  							<th><b>Faculty Name</b></th>
+  							<th><b>Added On</b></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              {{range .Facultys}}
+    						<tr>
+    							<td>{{.Facultyid}}</td>
+    							<td>{{.Facultyname}}</td>
+    							<td>{{.Addedon}}</td>
+    						</tr>
+              {{end}}
+  					</tbody>
+  				</table>
+        {{end}}
 			</div>
 		</div>
-	<!--{{end}}	-->
 	</div>
 </div>
 <!-- List Faculty Modal ends -->
 <!-- Remove Faculty Modal starts -->
 <div id="RemoveModal" class="modal fade">
 	<div class="modal-dialog">
-	<!--{{if not .Faculties}}
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#4CAF50">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Select Faculty to be Removed</h2></center>
 			</div>
 			<div class="modal-body">
-				<center><h2>Faculties Not Added</h2></center>
-			<div>
-		</div>
-	{{else-->
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#4CAF50">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<center><h2 class="modal-title" >Select Faculties to be Removed</h2></center>
-			</div>
-			<div class="modal-body">
+        {{if not .Facultys}}
+        No faculties have been added.
+        {{else}}
 				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
 					<thead>
 						<tr>
@@ -159,16 +147,18 @@
 						</tr>
 					</thead>
 					<tbody>
+            {{range .Facultys}}
 						<tr>
-							<td>123</td>
-							<td>ABC</td>															<!-- Remove wala link dekh lio -->
+							<td>{{.Facultyid}}</td>
+							<td>{{.Facultyname}}</td>															<!-- Remove wala link dekh lio -->
 							<td><a href="/removefaculty/{{.Facultyid}}"><button type="submit" value="Remove Faculty" name="remove" id="Rem"><b>Remove</b></button></a></td>
 						</tr>
+            {{end}}
 					</tbody>
 				</table>
+        {{end}}
 			</div>
 		</div>
-	<!--{{end}}-->
 	</div>
 </div>
 <!-- Remove Faculty Modal ends -->

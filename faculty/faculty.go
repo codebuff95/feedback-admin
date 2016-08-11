@@ -4,6 +4,7 @@ import(
   //"github.com/codebuff95/uafm"
   //"github.com/codebuff95/uafm/usersession"
   "github.com/codebuff95/uafm/formsession"
+  "feedback-admin/college"
   "feedback-admin/user"
   "feedback-admin/database"
   "feedback-admin/templates"
@@ -24,6 +25,7 @@ type Faculty struct{
 type FacultyPage struct{
   Facultys *[]Faculty
   FormSid *string
+  Collegename *string
 }
 
 func GetFacultys() (*[]Faculty,error){
@@ -62,6 +64,7 @@ func displayFacultyPage(w http.ResponseWriter, r *http.Request){
     return
   }
   myFacultyPage.FormSid = formSid
+  myFacultyPage.Collegename = &college.GlobalDetails.Collegename
   log.Println("Creating new Faculty page to client",r.RemoteAddr,"with formSid:",*myFacultyPage.FormSid)  //Enter client ip address and new form SID.
   myFacultyPage.Facultys,_ = GetFacultys()
   templates.FacultyPageTemplate.Execute(w,myFacultyPage)

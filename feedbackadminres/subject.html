@@ -23,7 +23,7 @@
 <nav class="navbar navbar-inverse">
 	 <div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><h3><b>College Name </b></h3></a>		<!-- Put the College name here -->
+			<a class="navbar-brand" href="#"><h3><b>{{.Collegename}}</b></h3></a>		<!-- Put the College name here -->
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
@@ -78,7 +78,7 @@
 					<br>
 					<input type="text" name="subjectid" placeholder="Enter Subject ID">
 					<br><br>
-					<label><b>Subject Name<b></label> 
+					<label><b>Subject Name<b></label>
 					<br>
 					<input type="text" name="subjectname" placeholder="Enter Subject Name">
 					<br><br>
@@ -92,83 +92,71 @@
 <!-- Add Subject Modal ends -->
 <!-- List Subject Modal starts -->
 <div id="ListModal" class="modal fade">
-	<div class="modal-dialog">								<!-- Inserted the if else condition -->
-	<!--{{if not .Subjects}}
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#4CAF50">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body">
-				<center><h2>Subjects Not Added</h2></center>
-			<div>
-		</div>
-	{{else}}-->
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#4CAF50">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<center><h2 class="modal-title" >Subject Details</h2></center>
 			</div>
 			<div class="modal-body">
-				<table class="table table-hover table-bordered">
-					<thead>													<!-- Make table dynamic -->
-						<tr>
-							<th><b>Subject ID</b></th>
-							<th><b>Subject Name</b></th>
-							<th><b>Added On</b></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>123</td>
-							<td>ABC</td>
-							<td>01/01/2000</td>
-						</tr>
-					</tbody>
-				</table>
+        {{if not .Subjects}}
+          No subjects have been added.
+        {{else}}
+  				<table class="table table-hover table-bordered">
+  					<thead>													<!-- Make table dynamic -->
+  						<tr>
+  							<th><b>Subject ID</b></th>
+  							<th><b>Subject Name</b></th>
+  							<th><b>Added On</b></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              {{range .Subjects}}
+    						<tr>
+    							<td>{{.Subjectid}}</td>
+    							<td>{{.Subjectname}}</td>
+    							<td>{{.Addedon}}</td>
+    						</tr>
+              {{end}}
+  					</tbody>
+  				</table>
+        {{end}}
 			</div>
 		</div>
-	<!--{{end}}	-->
 	</div>
 </div>
 <!-- List Subject Modal ends -->
 <!-- Remove Subject Modal starts -->
 <div id="RemoveModal" class="modal fade">
 	<div class="modal-dialog">
-	<!--{{if not .Subjects}}
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#4CAF50">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Select Subject to be Removed</h2></center>
 			</div>
 			<div class="modal-body">
-				<center><h2>Subjects Not Added</h2></center>
-			<div>
-		</div>
-	{{else-->
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#4CAF50">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<center><h2 class="modal-title" >Select Subjects to be Removed</h2></center>
-			</div>
-			<div class="modal-body">
-				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
-					<thead>
-						<tr>
-							<th><b>Subject ID</b></th>
-							<th><b>Subject Name</b></th>
-							<th><b>Remove</b></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>123</td>
-							<td>ABC</td>															<!-- Remove wala link dekh lio -->
-							<td><a href="/removesubject/{{.Subjectid}}"><button type="submit" value="Remove Subject" name="remove" id="Rem"><b>Remove</b></button></a></td>
-						</tr>
-					</tbody>
-				</table>
+        {{if not .Subjects}}
+          No subjects have been added.
+        {{else}}
+  				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
+  					<thead>
+  						<tr>
+  							<th><b>Subject ID</b></th>
+  							<th><b>Subject Name</b></th>
+  							<th><b>Remove</b></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+  						<tr>
+  							<td>{{.Subjectid}}</td>
+  							<td>{{.Subjectname}}</td>															<!-- Remove wala link dekh lio -->
+  							<td><a href="/removesubject/{{.Subjectid}}"><button type="submit" value="Remove Subject" name="remove" id="Rem"><b>Remove</b></button></a></td>
+  						</tr>
+  					</tbody>
+  				</table>
+        {{end}}
 			</div>
 		</div>
-	<!--{{end}}-->
 	</div>
 </div>
 <!-- Remove Subject Modal ends -->

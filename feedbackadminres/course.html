@@ -23,7 +23,7 @@
 <nav class="navbar navbar-inverse">
 	 <div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><h3><b>College Name </b></h3></a>		<!-- Put the College name here -->
+			<a class="navbar-brand" href="#"><h3><b>{{.Collegename}}</b></h3></a>		<!-- Put the College name here -->
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
@@ -78,7 +78,7 @@
 					<br>
 					<input type="text" name="courseid" placeholder="Enter Course ID">
 					<br><br>
-					<label><b>Course Name<b></label> 
+					<label><b>Course Name<b></label>
 					<br>
 					<input type="text" name="coursename" placeholder="Enter Course Name">
 					<br><br>
@@ -92,83 +92,73 @@
 <!-- Add Course Modal ends -->
 <!-- List Course Modal starts -->
 <div id="ListModal" class="modal fade">
-	<div class="modal-dialog">								<!-- Inserted the if else condition -->
-	<!--{{if not .Courses}}
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#4CAF50">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-			</div>
-			<div class="modal-body">
-				<center><h2>Courses Not Added</h2></center>
-			<div>
-		</div>
-	{{else}}-->
+	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#4CAF50">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<center><h2 class="modal-title" >Course Details</h2></center>
 			</div>
 			<div class="modal-body">
-				<table class="table table-hover table-bordered">
-					<thead>													<!-- Make table dynamic -->
-						<tr>
-							<th><b>Course ID</b></th>
-							<th><b>Course Name</b></th>
-							<th><b>Added On</b></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>123</td>
-							<td>ABC</td>
-							<td>01/01/2000</td>
-						</tr>
-					</tbody>
-				</table>
+        {{if not .Courses}}
+          No courses have been added.
+        {{else}}
+          <table class="table table-hover table-bordered">
+  					<thead>													<!-- Make table dynamic -->
+  						<tr>
+  							<th><b>Course ID</b></th>
+  							<th><b>Course Name</b></th>
+  							<th><b>Added On</b></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              {{range .Courses}}
+    						<tr>
+    							<td>{{.Courseid}}</td>
+    							<td>{{.Coursename}}</td>
+    							<td>{{.Addedon}}</td>
+    						</tr>
+              {{end}}
+  					</tbody>
+  				</table>
+        {{end}}
 			</div>
 		</div>
-	<!--{{end}}	-->
 	</div>
 </div>
 <!-- List Course Modal ends -->
 <!-- Remove Course Modal starts -->
 <div id="RemoveModal" class="modal fade">
 	<div class="modal-dialog">
-	<!--{{if not .Courses}}
 		<div class="modal-content">
 			<div class="modal-header" style="background-color:#4CAF50">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Select Course to be Removed</h2></center>
 			</div>
 			<div class="modal-body">
-				<center><h2>Courses Not Added</h2></center>
-			<div>
-		</div>
-	{{else-->
-		<div class="modal-content">
-			<div class="modal-header" style="background-color:#4CAF50">
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
-				<center><h2 class="modal-title" >Select Courses to be Removed</h2></center>
-			</div>
-			<div class="modal-body">
-				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
-					<thead>
-						<tr>
-							<th><b>Course ID</b></th>
-							<th><b>Course Name</b></th>
-							<th><b>Remove</b></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>123</td>
-							<td>ABC</td>															<!-- Remove wala link dekh lio -->
-							<td><a href="/removeCourse/{{.Courseid}}"><button type="submit" value="Remove Course" name="remove" id="Rem"><b>Remove</b></button></a></td>
-						</tr>
-					</tbody>
-				</table>
+        {{if not .Courses}}
+          No courses have been added.
+        {{else}}
+  				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
+  					<thead>
+  						<tr>
+  							<th><b>Course ID</b></th>
+  							<th><b>Course Name</b></th>
+  							<th><b>Remove</b></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              {{range .Courses}}
+  						<tr>
+  							<td>{{.Courseid}}</td>
+  							<td>{{.Coursename}}</td>															<!-- Remove wala link dekh lio -->
+  							<td><a href="/removecourse/{{.Courseid}}"><button type="submit" value="Remove Course" name="remove" id="Rem"><b>Remove</b></button></a></td>
+  						</tr>
+              {{end}}
+  					</tbody>
+  				</table>
+        {{end}}
 			</div>
 		</div>
-	<!--{{end}}-->
 	</div>
 </div>
 <!-- Remove Course Modal ends -->

@@ -4,6 +4,7 @@ import(
   //"github.com/codebuff95/uafm"
   "github.com/codebuff95/uafm/usersession"
   "github.com/codebuff95/uafm/formsession"
+  "feedback-admin/college"
   "feedback-admin/user"
   "feedback-admin/templates"
   "net/http"
@@ -12,6 +13,11 @@ import(
   "errors"
   //"html/template"
 )
+
+type LoginPage struct{
+  Formsid *string
+  Collegename *string
+}
 
 func displayLoginForm(w http.ResponseWriter, r *http.Request){
   log.Println("Displaying login form to user.")
@@ -22,7 +28,10 @@ func displayLoginForm(w http.ResponseWriter, r *http.Request){
     return
   }
   log.Println("Creating new login form to client",r.RemoteAddr,"with fomSid:",*formSid)  //Enter client ip address and new form SID.
-  templates.LoginFormTemplate.Execute(w,formSid)
+  var myLoginPage LoginPage
+  myLoginPage.Formsid = formSid
+  myLoginPage.Collegename = &college.GlobalDetails.Collegename
+  templates.LoginFormTemplate.Execute(w,myLoginPage)
 }
 
 func displayBadPage(w http.ResponseWriter, r *http.Request, err error){

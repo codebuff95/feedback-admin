@@ -19,13 +19,14 @@
 	<link rel="stylesheet" href="/resources/loginstyle.css">
 </head>
 <body>
+  <!-- Create a top navigation for College name. Use {{.Collegename}} for the collegename -->
 <div>
 	<center>
 	<div class="panel panel-default">
 	<form method="POST" action="/login">
 		<center>
 		<div class="imgcontainer">
-			<img src="/resources/dpic.jpg" alt="Profile Pic" height="200px" width="200px" style="border-radius:180px;">
+			<img src="/resources/admin.png" alt="Profile Pic" height="200px" width="200px" style="border-radius:180px;">
 		</div>
 		</center>							<!-- used ur code, still check the links -->
 		<br><br>
@@ -36,7 +37,7 @@
 		<label><b>Password</b></label>
 		<br>
 		<input type="password" name="password" placeholder="Enter Password">
-		<input type="hidden" name="formsid" value="{{.}}">
+		<input type="hidden" name="formsid" value="{{.Formsid}}">
 		<br><br>
 		<button type="submit" name="Submit" value="Login"><b>Login</b></button>
 		<br><br>

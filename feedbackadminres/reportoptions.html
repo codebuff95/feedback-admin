@@ -23,7 +23,7 @@
 <nav class="navbar navbar-inverse">
 	 <div class="container-fluid">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><h3><b>College Name </b></h3></a>		<!-- Put the College name here -->
+			<a class="navbar-brand" href="#"><h3><b>{{.}}</b></h3></a>		<!-- Put the College name here -->
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
@@ -75,7 +75,7 @@
 			<div class="modal-body">				<!-- Used ur code in form still go through it once -->
 			<center>
 				<form method="POST" action="/sectionwisereport" style="padding:20px;">
-					<input type="text" name="sectionsession" placeholder="Enter Section ID">
+					<input type="text" name="sectionid" placeholder="Enter Section ID">
 						<br><br>
 					<input type="submit" value="Generate Report">
 				</form>
@@ -96,7 +96,7 @@
 			<div class="modal-body">															<!-- Used ur code in form still go through it once -->
 			<center>
 				<form method="POST" action="/subjectwisereport" style="padding:20px;">
-					<input type="text" name="sectionsession" placeholder="Enter Section ID">
+					<input type="text" name="sectionid" placeholder="Enter Section ID">
 						<br><br>
 					<input type="submit" value="Generate Report">
 				</form>
@@ -117,7 +117,7 @@
 			<div class="modal-body">															<!-- Used ur code in form still go through it once -->
 			<center>
 				<form method="POST" action="/pointwisereport" style="padding:20px;">
-					<input type="text" name="sectionsession" placeholder="Enter Section ID">
+					<input type="text" name="sectionid" placeholder="Enter Section ID">
 						<br><br>
 					<input type="submit" value="Generate Report">
 				</form>

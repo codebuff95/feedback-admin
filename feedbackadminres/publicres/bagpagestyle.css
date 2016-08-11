@@ -1,0 +1,44 @@
+body
+	{
+		background-image:url("back1.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-position: center;
+	}
+	.panel
+	{
+		width:600px;
+		margin-top:50px;
+	}
+	.imgcontainer
+	{
+		margin-top:30px;
+	}
+	h2
+	{
+		<!--color:#f44336;-->
+		color:black;
+		font-family: "Raleway","Palatino Linotype", "Book Antiqua", Palatino, serif;
+		font-weight:bold;
+		font-size:40px;
+	}
+	a
+	{
+		color:black;
+	}
+	a:hover
+	{
+		text-decoration:none;
+		color:black;
+	}
+	a:onclick
+	{
+		text-decoration:none;
+	}
+	h4
+	{
+		<!--color:#f44336;-->
+		color:black;
+		font-size:20px;
+	}

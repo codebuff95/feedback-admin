@@ -7,6 +7,7 @@ import(
   "feedback-admin/user"
   "feedback-admin/database"
   "feedback-admin/templates"
+  "feedback-admin/college"
   "net/http"
   "time"
   "log"
@@ -24,6 +25,7 @@ type Course struct{
 type CoursePage struct{
   Courses *[]Course
   FormSid *string
+  Collegename *string
 }
 
 func GetCourses() (*[]Course,error){
@@ -62,6 +64,7 @@ func displayCoursePage(w http.ResponseWriter, r *http.Request){
     return
   }
   myCoursePage.FormSid = formSid
+  myCoursePage.Collegename = &college.GlobalDetails.Collegename
   log.Println("Creating new course page to client",r.RemoteAddr,"with formSid:",*myCoursePage.FormSid)  //Enter client ip address and new form SID.
   myCoursePage.Courses,_ = GetCourses()
   templates.CoursePageTemplate.Execute(w,myCoursePage)

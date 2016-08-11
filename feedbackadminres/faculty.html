@@ -1,55 +1,166 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="/resources/style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
     <title>Feedback - Admin: Faculty</title>
-  </head>
-  <body>
-      {{if not .Facultys}}
-        No faculties added.
-      {{else}}
-        Added facultys are:<br>
-        <table>
-          <tr>
-            <td>
-              Faculty ID
-            </td>
-            <td>
-              Faculty Name
-            </td>
-            <td>
-              Added On
-            </td>
-            <td>
-              Remove Faculty
-            </td>
-          </tr>
-          {{range .Facultys}}
-            <tr>
-              <td>
-                {{.Facultyid}}
-              </td>
-              <td>
-                {{.Facultyname}}
-              </td>
-              <td>
-                {{.Addedon}}
-              </td>
-              <td>
-                <a href="/removefaculty/{{.Facultyid}}">Remove</a>
-              </td>
-            </tr>
-          {{end}}
-        </table>
-      {{end}}
-      <br><br>
-      Add a new faculty:
-      <form method="POST" action="/addfaculty">
-        Faculty ID: <input type="text" name="facultyid" placeholder="Enter Faculty ID">
-        Faculty Name: <input type="text" name="facultyname" placeholder="Enter Faculty Name">
-        <input type="hidden" name="formsid" value="{{.FormSid}}">
-        <input type="submit" value="Add Faculty" name="submit">
-      </form>
-      <br><br>
-      <a href="/home"> Go back to home. </a>
-  </body>
+	 <link rel="icon" href="#" type="image/x-icon">
+    <!-- For mobile first-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- For Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- For Social Icons -->
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- For CSS File -->
+	<link rel="stylesheet" href="/resources/facultystyle.css">
+</head>
+<body>
+<!-- Top navbar starts -->
+<nav class="navbar navbar-inverse">
+	 <div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#"><h3><b>{{.Collegename}}</b></h3></a>		<!-- Put the College name here -->
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
+		</ul>
+	</div>
+</nav>
+<!-- Top navbar ends -->
+<!-- Option Panel starts -->
+<center>
+<div class="panel panel-default">
+	<h1>Faculties</h1>
+	<hr>
+	<br>
+	<div class="row">
+		<div class="col-xs-6" style="border-right: solid #f2f2f2;">
+			<a href="#" data-toggle="modal" data-target="#AddModal"><center><span class="glyphicon glyphicon-plus"></span><br><h4> Add Faculties</h4></center></a>
+		</div>
+		<div class="col-xs-6">
+			<a href="#" data-toggle="modal" data-target="#ListModal"><center><span class="glyphicon glyphicon-th-list"></span><br><h4> List Faculties</h4></center></a>
+		</div>
+	</div>
+	<br>
+	<hr id="hline">
+	<br>
+	<div class="row">
+		<div class="col-xs-4">
+		</div>
+		<div class="col-xs-4">
+			<a href="#" data-toggle="modal" data-target="#RemoveModal"><center><span class="glyphicon glyphicon-remove"></span><br><h4> Remove Faculties</h4></center></a>
+		</div>
+		<div class="col-xs-4">
+		</div>
+	</div>
+	<br>
+	<hr>
+	<br>				<!-- home wala link b check kr lio -->
+	<center><a href="/home"><h5><span class="glyphicon glyphicon-chevron-left" style="font-size:15px;"></span> Go Back To Homepage</h5></a></center>
+</div>
+</center>
+<!-- Option Panel ends -->
+<!-- Add Faculty Modal starts -->
+<div id="AddModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#4CAF50">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Please Enter Faculty Details</h2></center>
+			</div>
+			<div class="modal-body">															<!-- Used ur code in form still go through it once -->
+				<form method="POST" action="/addfaculty" style="padding:20px;">
+					<label><b>Faculty ID<b></label>
+					<br>
+					<input type="text" name="facultyid" placeholder="Enter Faculty ID">
+					<br><br>
+					<label><b>Faculty Name<b></label>
+					<br>
+					<input type="text" name="facultyname" placeholder="Enter Faculty Name">
+					<br><br>
+					<input type="hidden" name="formsid" value="{{.FormSid}}">
+					<button type="submit" value="Add Faculty" name="submit" id="Add"><b>Add Faculty</b></button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Add Faculty Modal ends -->
+<!-- List Faculty Modal starts -->
+<div id="ListModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#4CAF50">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Faculty Details</h2></center>
+			</div>
+			<div class="modal-body">
+        {{if not .Facultys}}
+          No faculties have been added.
+        {{else}}
+  				<table class="table table-hover table-bordered">
+  					<thead>													<!-- Make table dynamic -->
+  						<tr>
+  							<th><b>Faculty ID</b></th>
+  							<th><b>Faculty Name</b></th>
+  							<th><b>Added On</b></th>
+  						</tr>
+  					</thead>
+  					<tbody>
+              {{range .Facultys}}
+    						<tr>
+    							<td>{{.Facultyid}}</td>
+    							<td>{{.Facultyname}}</td>
+    							<td>{{.Addedon}}</td>
+    						</tr>
+              {{end}}
+  					</tbody>
+  				</table>
+        {{end}}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- List Faculty Modal ends -->
+<!-- Remove Faculty Modal starts -->
+<div id="RemoveModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#4CAF50">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Select Faculty to be Removed</h2></center>
+			</div>
+			<div class="modal-body">
+        {{if not .Facultys}}
+        No faculties have been added.
+        {{else}}
+				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
+					<thead>
+						<tr>
+							<th><b>Faculty ID</b></th>
+							<th><b>Faculty Name</b></th>
+							<th><b>Remove</b></th>
+						</tr>
+					</thead>
+					<tbody>
+            {{range .Facultys}}
+						<tr>
+							<td>{{.Facultyid}}</td>
+							<td>{{.Facultyname}}</td>															<!-- Remove wala link dekh lio -->
+							<td><a href="/removefaculty/{{.Facultyid}}"><button type="submit" value="Remove Faculty" name="remove" id="Rem"><b>Remove</b></button></a></td>
+						</tr>
+            {{end}}
+					</tbody>
+				</table>
+        {{end}}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Remove Faculty Modal ends -->
+</body>
 </html>

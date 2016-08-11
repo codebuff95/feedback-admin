@@ -1,9 +1,42 @@
-<html>
-  <head>
-    <title> Feedback - Admin: Error </title>
-  </head>
-  <body>
-    <p> Server generated error: {{.}} </p>
-    <p><a href="/login">Please Retry</a></p>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Feedback - Admin: Error</title>
+	 <link rel="icon" href="#" type="image/x-icon">
+    <!-- For mobile first-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- For Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- For Social Icons -->
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- For CSS File -->
+	<link rel="stylesheet" href="/resources/badpagestyle.css">
+</head>
+<body>
+<div>
+	<center>
+	<div class="panel panel-default">
+		<center>
+		<div class="imgcontainer">
+			<img src="/resources/sorry.png" alt="Sorry" height="200px" width="200px" style="border-radius:180px;">
+		</div>
+		</center>
+		<h2>Server Generated Error :</h2>
+		<br>
+		<h4>{{.}}</h4>
+		<br>
+		<h2><a href="/login">Please Retry</a></h2>
+		<br>
+		<hr>
+		<br>
+	</div>
+	</center>
+</div>
+</body>
 </html>

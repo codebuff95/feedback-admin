@@ -1,155 +1,273 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="/resources/style.css">
-    <title>Feedback - Admin: Sections</title>
-  </head>
-  <body>
-    <h2>Sections in session : {{.Session}}</h2>
-      {{if not .Sections}}
-        No sections added.
-      {{else}}
-        Added sections are:<br>
-        <table>
-          <tr>
-            <td>
-              Section ID
-            </td>
-            <td>
-              Section Name
-            </td>
-            <td>
-              Year
-            </td>
-            <td>
-              Academic Session
-            </td>
-            <td>
-              Course ID
-            </td>
-            <td>
-              No of Students
-            </td>
-            <td>
-              Passwords
-            </td>
-            <td>
-              Teachers
-            </td>
-            <td>
-              Added On
-            </td>
-            <td>
-              Remove Section
-            </td>
-            <td>
-              Add Teacher to Section
-            </td>
-          </tr>
-          {{range $currsection := .Sections}}
-            <tr>
-              <td>
-                {{.Sectionid}}
-              </td>
-              <td>
-                {{.Sectionname}}
-              </td>
-              <td>
-                {{.Year}}
-              </td>
-              <td>
-                {{.Session}}
-              </td>
-              <td>
-                {{.Courseid}}
-              </td>
-              <td>
-                {{.Students}}
-              </td>
-              <td>
-                {{if not .Passwords}}
-                This section has no remaining passwords
-                {{else}}
-                <form method="POST" action="/generatesectionpasswords">
-                  <input type="hidden" name="sectionid" value="{{.Sectionid}}">
-                  <input type="submit" value="Generate Passwords">
-                </form>
-                {{end}}
-              </td>
-              <td>
-                {{if not .Teachers}}
-                This section has no teachers added
-                {{else}}
-                <table>
-                  <tr>
-                    <td>
-                      Faculty ID
-                    </td>
-                    <td>
-                      Subject ID
-                    </td>
-                    <td>
-                    </td>
-                  </tr>
-                  {{range .Teachers}}
-                    <tr>
-                      <td>
-                        {{.Facultyid}}
-                      </td>
-                      <td>
-                        {{.Subjectid}}
-                      </td>
-                      <td>
-                        <form method="POST" action="/removeteacher">
-                          <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
-                          <input type="hidden" name="facultyid" value="{{.Facultyid}}">
-                          <input type="hidden" name="subjectid" value="{{.Subjectid}}">
-                          <input type="hidden" name="formsid" value="{{$.FormSid}}">
-                          <input type="Submit" value="Remove">
-                        </form>
-                      </td>
-                    </tr>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Feedback - Admin: Section</title>
+	 <link rel="icon" href="#" type="image/x-icon">
+    <!-- For mobile first-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- For Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- For Social Icons -->
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- For CSS File -->
+	<link rel="stylesheet" href="/resources/sectionstyle.css">
+</head>
+<body>
+<!-- Top navbar starts -->
+<nav class="navbar navbar-inverse">
+	 <div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#"><h3><b>{{.Collegename}}</b></h3></a>		<!-- Put the College name here -->
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
+		</ul>
+	</div>
+</nav>
+<!-- Top navbar ends -->
+<!-- Option Panel starts -->
+<center>
+<div class="panel panel-default">
+	<h1>Sections</h1>
+	<hr>
+	<br>
+	<div class="row">
+		<div class="col-xs-6" style="border-right: solid #f2f2f2;">
+			<a href="#" data-toggle="modal" data-target="#AddModal"><center><span class="glyphicon glyphicon-plus"></span><br><h4> Add Sections</h4></center></a>
+		</div>
+		<div class="col-xs-6">
+			<a href="#" data-toggle="modal" data-target="#ListModal"><center><span class="glyphicon glyphicon-th-list"></span><br><h4> List Sections</h4></center></a>
+		</div>
+	</div>
+	<br>
+	<hr id="hline">
+	<br>
+	<div class="row">
+		<div class="col-xs-4">
+		</div>
+		<div class="col-xs-4">
+			<a href="#" data-toggle="modal" data-target="#RemoveModal"><center><span class="glyphicon glyphicon-remove"></span><br><h4> Remove Sections</h4></center></a>
+		</div>
+		<div class="col-xs-4">
+		</div>
+	</div>
+	<br>
+	<hr>
+	<br>				<!-- home wala link b check kr lio -->
+	<center><a href="/home"><h5><span class="glyphicon glyphicon-chevron-left" style="font-size:15px;"></span> Go Back To Homepage</h5></a></center>
+</div>
+</center>
+<!-- Option Panel ends -->
+<!-- Add Section Modal starts -->
+<div id="AddModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#4CAF50">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Add a New Section in this Session</h2></center>
+			</div>
+			<div class="modal-body">															<!-- Used ur code in form still go through it once -->
+				<form method="POST" action="/addsection" style="padding:20px;">
+					<label><b>Section ID<b></label>
+					<br>
+					<input type="text" name="sectionid" placeholder="Enter Section ID">
+					<br><br>
+					<label><b>Section Name<b></label>
+					<br>
+					<input type="text" name="sectionname" placeholder="Enter Section Name">
+					<br><br>
+					<label><b>Section Year<b></label>
+					<br>
+					<input type="text" name="sectionyear" placeholder="Enter Section Year">
+					<br><br>
+					<input type="hidden" name="sectionsession" value="{{.Session}}">
+					<label><b>Section Course ID<b></label>
+					<br>
+					<input type="text" name="sectioncourseid" placeholder="Enter Section Course ID">
+					<br><br>
+					<label><b>Section Students<b></label>
+					<br>
+					<input type="text" name="sectionstudents" placeholder="Enter Section Students">
+					<br><br>
+					<input type="hidden" name="formsid" value="{{$.FormSid}}">
+					<button type="submit" value="Add Faculty" name="submit" id="Add"><b>Add Section</b></button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Add Section Modal ends -->
+<!-- List Section Modal starts -->
+<div id="ListModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content" id="big" style="">
+			<div class="modal-header" style="background-color:#4CAF50">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Section Details for {{.Session}}</h2></center>
+			</div>
+			<div class="modal-body">
+        {{if not .Sections}}
+          No sections have been added.
+        {{else}}
+				<table class="table table-hover table-bordered">
+					<thead>													<!-- Make table dynamic -->
+						<tr>
+							<th><b>Section ID</b></th>
+							<th><b>Section Name</b></th>
+							<th><b>Academic session</b></th>
+              <th><b>Year</b></th>
+							<th><b>Course ID</b></th>
+							<th><b>No. of Students</b></th>
+							<th><b>Password</b></th>						<!-- Insert the password condition -->
+							<th><b>Teachers</b></th>						<!-- Insert the teachers condition, CONFUSION -->
+							<th><b>Added On</b></th>
+							<th><b>Add Teacher to Section</b></th>					<!-- CONFUSION -->
+						</tr>
+					</thead>
+					<tbody>
+            {{range $currsection := .Sections}}
+  						<tr>
+  							<td>{{.Sectionid}}</td>
+  							<td>{{.Sectionname}}</td>
+  							<td>{{.Session}}</td>
+                <td>{{.Year}}</td>
+  							<td>{{.Courseid}}</td>
+  							<td>{{.Students}}</td>
+  							<td>
+                  {{if not .Passwords}}
+                    This section has no remaining passwords
+                  {{else}}
+                  <form method="POST" action="/generatesectionpasswords">
+                    <input type="hidden" name="sectionid" value="{{.Sectionid}}">
+                    <input type="submit" value="Generate Passwords">
+                  </form>
                   {{end}}
-                </table>
-                {{end}}
-              </td>
-              <td>
-                {{.Addedon}}
-              </td>
-              <td>
-                <a href="/removesection/{{.Sectionid}}">Remove</a>
-              </td>
-              <td>
-                <form method="POST" action="/addteacher">
-                      <input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
-                      <input type="hidden" name="formsid" value="{{$.FormSid}}">
-                      <input type="text" name="facultyid" placeholder="Faculty ID">
-                      <input type="text" name="subjectid" placeholder="Subject ID">
-                      <input type="Submit" value="Add">
-                </form>
-              </td>
-            </tr>
-          {{end}}
-        </table>
-      {{end}}
-      <br><br>
-      Add a new section in this session:
-      <form method="POST" action="/addsection">
-        Section ID: <input type="text" name="sectionid" placeholder="Enter Section ID">
-        Section Name: <input type="text" name="sectionname" placeholder="Enter Section Name">
-        <br>
-        Section Year: <input type="text" name="sectionyear" placeholder="Enter Section Year">
-        Section Session: {{.Session}}
-        <input type="hidden" name="sectionsession" value="{{.Session}}">
-        <br>
-        Section Course ID: <input type="text" name="sectioncourseid" placeholder="Enter Section Course ID">
-        Section Students: <input type="text" name="sectionstudents" placeholder="Enter Section Students">
-        <br>
-        <input type="hidden" name="formsid" value="{{$.FormSid}}">
-        <input type="submit" value="Add Section" name="submit">
-        <br>
-
-      </form>
-      <br><br>
-      <a href="/home"> Go back to home. </a>
-  </body>
+                </td>
+  							<td>
+                  {{if not .Teachers}}
+                    This section has no teachers added.
+                  {{else}}
+                  <a href="#" data-toggle="modal" data-target="#ListTeacher{{.Sectionid}}"><button type="submit" value="List Teachers" name="add"><b>List Teachers</b></button></a>
+                  <!-- List teacher modal starts -->
+                    <div id="ListTeacher{{.Sectionid}}" class="modal fade">
+      								<div class="modal-dialog">
+      									<div class="modal-content">
+      										<div class="modal-header" style="background-color:#4CAF50">
+      											<button type="button" class="close" data-dismiss="modal">&times;</button>
+      											<center><h2 class="modal-title" >List Teachers</h2></center>
+      										</div>
+      										<div class="modal-body">
+                            <label><b>Section ID: {{$currsection.Sectionid}}</b></label>
+                            <br>
+                            <table class="table table-hover table-bordered">
+                    					<thead>													<!-- Make table dynamic -->
+                    						<tr>
+                    							<th><b>Faculty ID</b></th>
+                    							<th><b>Subject ID</b></th>
+                    						</tr>
+                    					</thead>
+                    					<tbody>
+                                {{range $currsection.Teachers}}
+                      						<tr>
+                      							<td>{{.Facultyid}}</td>
+                      							<td>{{.Subjectid}}</td>
+                      						</tr>
+                                {{end}}
+                    					</tbody>
+                    				</table>
+      										</div>
+      									</div>
+      								</div>
+      							</div>
+                  <!-- List teacher modal ends -->
+                  {{end}}
+                </td>
+  							<td>{{.Addedon}}</td>
+  							<td><a href="#" data-toggle="modal" data-target="#AddTeacher{{.Sectionid}}"><button type="submit" value="Add Teacher" name="add"><b>Add Teacher</b></button></a></td>
+  							<!-- Add teacher modal starts -->
+  							<div id="AddTeacher{{.Sectionid}}" class="modal fade">
+  								<div class="modal-dialog">
+  									<div class="modal-content">
+  										<div class="modal-header" style="background-color:#4CAF50">
+  											<button type="button" class="close" data-dismiss="modal">&times;</button>
+  											<center><h2 class="modal-title" >Add Teacher to Section</h2></center>
+  										</div>
+  										<div class="modal-body">
+                        <label><b>Section ID: {{.Sectionid}}</b></label>
+                        <br>
+  											<form method="POST" action="/addteacher">
+  												<input type="hidden" name="sectionid" value="{{$currsection.Sectionid}}">
+  												<input type="hidden" name="formsid" value="{{$.FormSid}}">
+  												<label><b>Faculty ID</b></label>
+  												<br>
+  												<input type="text" name="facultyid" placeholder="Faculty ID">
+  												<br>
+  												<label><b>Subject ID</b></label>
+  												<br>
+  												<input type="text" name="subjectid" placeholder="Subject ID">
+  												<br>
+  												<button type="Submit" value="Add" name  ="add"><b>Add Teacher</b></button>
+  											</form>
+  										</div>
+  									</div>
+  								</div>
+  							</div>
+                <!-- Add teacher to section modal ends -->
+  						</tr>
+            {{end}}
+					</tbody>
+				</table>
+        {{end}}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- List Section Modal ends -->
+<!-- Remove Section Modal starts -->
+<div id="RemoveModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#4CAF50">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<center><h2 class="modal-title" >Remove Section</h2></center>
+			</div>
+      <div class="modal-body">
+        {{if not .Sections}}
+        No sections have been added.
+        {{else}}
+				<table class="table table-hover table-bordered">				<!-- Make table dynamic -->
+					<thead>
+						<tr>
+							<th><b>Section ID</b></th>
+							<th><b>Section Name</b></th>
+              <th><b>Section Year</b></th>
+              <th><b>Course ID</b></th>
+							<th><b>Remove</b></th>
+						</tr>
+					</thead>
+					<tbody>
+            {{range .Sections}}
+						<tr>
+							<td>{{.Sectionid}}</td>
+							<td>{{.Sectionname}}</td>															<!-- Remove wala link dekh lio -->
+              <td>{{.Year}}</td>
+              <td>{{.Courseid}}</td>
+							<td><a href="/removesection/{{.Sectionid}}"><button type="submit" value="Remove Section" name="remove" id="Rem"><b>Remove</b></button></a></td>
+						</tr>
+            {{end}}
+					</tbody>
+				</table>
+        {{end}}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Remove Section Modal ends -->
+</body>
 </html>

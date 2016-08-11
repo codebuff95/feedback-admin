@@ -5,6 +5,7 @@ import(
   //"github.com/codebuff95/uafm/usersession"
   "github.com/codebuff95/uafm/formsession"
   "feedback-admin/user"
+  "feedback-admin/college"
   "feedback-admin/database"
   "feedback-admin/templates"
   "net/http"
@@ -24,6 +25,7 @@ type Subject struct{
 type SubjectPage struct{
   Subjects *[]Subject
   FormSid *string
+  Collegename *string
 }
 
 func GetSubjects() (*[]Subject,error){
@@ -62,6 +64,7 @@ func displaySubjectPage(w http.ResponseWriter, r *http.Request){
     return
   }
   mySubjectPage.FormSid = formSid
+  mySubjectPage.Collegename = &college.GlobalDetails.Collegename
   log.Println("Creating new Subject page to client",r.RemoteAddr,"with formSid:",*mySubjectPage.FormSid)  //Enter client ip address and new form SID.
   mySubjectPage.Subjects,_ = GetSubjects()
   templates.SubjectPageTemplate.Execute(w,mySubjectPage)

@@ -1,9 +1,100 @@
-<html>
-  <head>
-    <title> Feedback - Admin: Welcome </title>
-  </head>
-  <body>
-    <p> <a href="/course">Courses</a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Feedback - Admin: Welcome</title>
+	 <link rel="icon" href="#" type="image/x-icon">
+    <!-- For mobile first-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- For Bootstrap -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!-- For Social Icons -->
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- For CSS File -->
+	<link rel="stylesheet" href="/resources/homestyle.css">
+</head>
+<body>
+<!-- Top navbar starts -->
+<nav class="navbar navbar-inverse">
+	 <div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#"><h3><b>{{.Collegename}}</b></h3></a>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout"><span class="glyphicon glyphicon-log-out" id="logout"></span></a></li>
+		</ul>
+	</div>
+</nav>
+<!-- Top navbar ends -->
+<center>
+	<!-- Welcome panel starts -->
+	<div class="panel panel-default">
+		<div class="imgcontainer">
+			<img src="/resources/admin.png" alt="Profile Pic" height="200px" width="200px" style="border-radius:180px;">
+		</div>
+		<h1>Welcome, Admin.</h1>
+		<br>
+		<hr>
+		<!-- Menu / Options starts -->
+		<div class="row" id="menu">
+			<div class="col-xs-6" id="line" style=" float:left;">
+				<a href="/course"><center><span class="glyphicon glyphicon-education" style="font-size:45px;"></span><br><h4>Courses</h4></center></a>
+			</div>
+			<div class="col-xs-6" style=" float:right; margin-top:1px;">
+				<a href="/subject"><center><span class="glyphicon glyphicon-book"></span><br><h4>Subjects</h4></center></a>
+			</div>
+		</div>
+		<hr id="hline">
+		<div class="row" id="menu">
+			<div class="col-xs-6" id="line" style=" float:left;">
+				<a href="/faculty"><center><span class="glyphicon glyphicon-user"></span><br><h4>Faculties</h4></center></a>
+			</div>
+			<div class="col-xs-6" style=" float:right;">
+				<a href="#" data-toggle="modal" data-target="#myModal"><center><span class="glyphicon glyphicon-pencil"></span><br><h4>Section</h4></center></a>
+			</div>
+		</div>
+		<hr id="hline">
+		<div class="row" id="menu">
+			<div class="col-xs-4">
+			</div>
+			<div class="col-xs-4">
+				<a href="/report"><center><span class="glyphicon glyphicon-list-alt"></span><br><h4>Gerenate Report</h4></center></a>
+			</div>
+			<div class="col-xs-4">
+			</div>
+		</div>
+		<!-- Menu / Options ends -->
+
+		<hr>
+		<br><br>
+	</div>
+	<!-- Welcome panel ends -->
+	<!-- Modal for session starts -->
+	<div id="myModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header" style="background-color:#4CAF50">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h2 class="modal-title">Please Enter Session</h2>
+				</div>
+				<div class="modal-body">
+					<form method="GET" action="/section">
+						<input type="text" name="sectionsession" placeholder="Enter session">
+						<br><br>
+						<input type="submit" value="Submit">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal for session ends -->
+</center>
+    <!--<p> <a href="/course">Courses</a></p>
     <p> <a href="/subject">Subjects</a></p>
     <p> <a href="/faculty">Faculties</a></p>
     <p>
@@ -12,7 +103,6 @@
         <input type="submit" value="Open Sections">
       </form>
     </p>
-    <p> <a href="/report">Generate Reports</a></p>
-    <p> <a href="/logout">Logout</a></p>
-  </body>
+    <p> <a href="/logout">Logout</a></p>-->
+</body>
 </html>

@@ -1,0 +1,66 @@
+body
+	{
+		background-image:url("back1.jpg");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-position: center;
+	}
+	.panel
+	{
+		width:600px;
+		margin-top:50px; 
+		border-radius:5px;
+	}
+	.imgcontainer
+	{
+		height:200px; 
+		width:150px; 
+		border-radius:200px; 
+		margin-top:30px;
+		text-align:center;
+	}
+	label
+	{
+		margin-left:-370px; 
+		font-size:18px;
+	}
+	input[type=text], input[type=password] 
+	{
+		width: 80%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		display: inline-block;
+		border: 1px solid #ccc;
+		box-sizing: border-box;
+		border-radius:3px;
+		box-shadow:1px 1px #e6e6e6;
+	}
+	input[type=checkbox]
+	{
+		margin-left:-350px; 
+		font-size:18px;
+		box-shadow:1px 1px #e6e6e6;
+	}
+	button
+	{
+		background-color: #4CAF50;
+		color: white;
+		padding: 14px 20px;
+		margin: 8px 0;
+		border: none;
+		cursor: pointer;
+		width: 80%;
+		border-radius:3px;
+		box-shadow:1px 2px #e6e6e6;
+	}
+	button:hover
+	{
+		background-color: #3e8e41;
+	}
+
+	span.psw
+	{
+		float: right;
+		padding-top: 16px;
+	}

@@ -147,11 +147,13 @@
   						</tr>
   					</thead>
   					<tbody>
+              {{range .Subjects}}
   						<tr>
   							<td>{{.Subjectid}}</td>
   							<td>{{.Subjectname}}</td>															<!-- Remove wala link dekh lio -->
   							<td><a href="/removesubject/{{.Subjectid}}"><button type="submit" value="Remove Subject" name="remove" id="Rem"><b>Remove</b></button></a></td>
   						</tr>
+              {{end}}
   					</tbody>
   				</table>
         {{end}}

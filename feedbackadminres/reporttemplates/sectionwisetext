@@ -1,0 +1,6 @@
+,{{.Collegename}}
+
+SECTION,{{.Sectionname}}, {{.Sectionid}}
+S.No., {{range .Textquestions}} {{.Text}}, {{end}}
+{{range .Customfeedbacks}} {{.Index}}, {{range .Responses}} {{.}}, {{end}}
+{{end}}

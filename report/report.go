@@ -470,7 +470,7 @@ func getSectionWiseTextCustomFeedbacks(sectionId string, Textquestions *[]questi
 		}
 		for _, Textquestion := range *Textquestions {
 			mySectionWiseTextCustomFeedbackSlice[i].Index = i + 1
-			mySectionWiseTextCustomFeedbackSlice[i].Responses = append(mySectionWiseTextCustomFeedbackSlice[i].Responses, myMap[Textquestion.Questionid])
+			mySectionWiseTextCustomFeedbackSlice[i].Responses = append(mySectionWiseTextCustomFeedbackSlice[i].Responses, strings.Replace(myMap[Textquestion.Questionid], ",", ";", -1))
 		}
 	}
 	log.Println("Success getting Section Wise Text Custom Feedback Slice")
